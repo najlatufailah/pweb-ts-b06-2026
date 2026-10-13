@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - RS Sehat Sentosa</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">+</div>
+      <div>
+        <h2>RS Sehat Sentosa</h2>
+        <p>Melayani dengan Hati</p>
+      </div>
+    </div>
+    
+    <ul class="sidebar-menu">
+      <li><a href="index.html" class="active">Dashboard</a></li>
+      <li><a href="operator.html">Jenis Antrian</a></li>
+      <li><a href="layar.html">Terbitkan Tiket</a></li>
+      <li><a href="ambil-antrian.html">Riwayat Antrian</a></li>
+    </ul>
+
+    <div class="user-profile-box">
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Top Bar Header -->
+    <header class="top-navbar">
+      <div class="menu-toggle"></div>
+      <div class="top-nav-right">
+        <div class="notification-icon-box" title="Notifikasi"></div>
+        <div class="profile-pill">
+          <div class="avatar-circle" id="userAvatar">A</div>
+          <div class="profile-info">
+            <span class="profile-name" id="userName">Admin</span>
+            <span class="profile-role" id="userRole">ADMIN</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Header & Clock -->
+    <div class="header-content-row">
+      <div>
+        <h1 id="greetingTitle">Halo, Admin</h1>
+        <p>Kelola jenis antrian, terbitkan tiket manual, dan pantau antrian.</p>
+      </div>
+      <div class="realtime-clock-box">
+        <div class="clock-date" id="clockDate">-</div>
+        <div class="clock-time" id="realtimeClock">-</div>
+      </div>
+    </div>
+
+    <!-- Metric Cards (Lingkaran Polos Minimalis Tanpa Emoji) -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-circle bg-green-light"></div>
+        <div class="metric-text">
+          <span class="metric-label">Total Jenis Antrian</span>
+          <span class="metric-num" id="statTotalJenis">0</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon-circle bg-green-soft"></div>
+        <div class="metric-text">
+          <span class="metric-label">Antrian Aktif</span>
+          <span class="metric-num" id="statAntrianAktif">0</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon-circle bg-pink-soft"></div>
+        <div class="metric-text">
+          <span class="metric-label">Sedang Dipanggil</span>
+          <span class="metric-num" id="statSedangDipanggil">0</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon-circle bg-gray-soft"></div>
+        <div class="metric-text">
+          <span class="metric-label">Tiket Selesai</span>
+          <span class="metric-num" id="statTiketSelesai">0</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid (2 Kolom) -->
+    <div class="dashboard-grid">
+      <!-- Kolom Kiri: Kelola Jenis Antrian -->
+      <div class="card">
+        <div class="card-header-flex">
+          <h3>Jenis Antrian</h3>
+        </div>
+
+        <form id="formTambahLayanan" style="margin-bottom: 16px; background: var(--pale-sage); padding: 12px; border-radius: 6px;">
+          <div class="form-row" style="display: flex; gap: 8px;">
+            <div style="flex: 1;">
+              <label style="font-size: 0.75rem; font-weight: 600;">Kode (1 Huruf)</label>
+              <input type="text" id="inputKode" class="form-control" maxlength="1" placeholder="C" required>
+            </div>
+            <div style="flex: 3;">
+              <label style="font-size: 0.75rem; font-weight: 600;">Nama Layanan</label>
+              <input type="text" id="inputNama" class="form-control" placeholder="Contoh: Poli Anak" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" style="margin-top: 8px; padding: 6px; font-size: 0.85rem;">+ Tambah Jenis Antrian</button>
+        </form>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Kode</th>
+                <th>Nama Layanan</th>
+                <th>Status</th>
+                <th style="text-align: right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tabelJenisAntrian">
+              <!-- Rendered by TS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Terbitkan Tiket Manual & Tiket Terbaru -->
+      <div class="right-column-stack">
+        <div class="card">
+          <h3>Terbitkan Tiket Manual</h3>
+          <form id="formTerbitkanTiket">
+            <div class="form-group">
+              <label>Jenis Antrian</label>
+              <select id="selectJenisAntrianTiket" class="form-control" required>
+                <option value="">Pilih jenis antrian</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tingkat Prioritas</label>
+              <select id="selectPrioritas" class="form-control" required>
+                <option value="Normal">Normal</option>
+                <option value="Lansia">Lansia</option>
+                <option value="Disabilitas">Disabilitas</option>
+                <option value="VIP">VIP</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-primary">Terbitkan Tiket</button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header-flex">
+            <h3>Tiket Terbaru</h3>
+            <button id="btnResetAntrian" class="btn-reset-outline">Reset Antrian</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Kode</th>
+                  <th>Prioritas</th>
+                  <th>Waktu</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="tabelRiwayatAntrian">
+                <!-- Rendered by TS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script/dashboard.js" defer></script>
+</body>
+</html>
